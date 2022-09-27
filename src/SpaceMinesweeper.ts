@@ -5,6 +5,7 @@
  */ 
 
 import * as gfx from 'gophergfx'
+import { ShapeInstance, Vector2 } from 'gophergfx';
 import { Mine } from './Mine';
 
 export class SpaceMinesweeper extends gfx.GfxApp
@@ -136,7 +137,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
             
             // ADD YOUR CODE HERE
-
+            const shipDistance = gfx.Vector2.subtract(this.ship.position, this.mousePosition);
+            shipDistance.normalize();
+            shipDistance.multiplyScalar(shipSpeed*star.scale.x*100);
+            star.position.add(shipDistance);
 
             // This code resets the position of the star if it has moved outside
             // the boundaries of the scene, which are between (-1, -1) and (1, 1).
@@ -161,12 +165,16 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
             
             // ADD YOUR CODE HERE
-
-           
+            const shipDistance = gfx.Vector2.subtract(this.ship.position, this.mousePosition);
+            shipDistance.normalize();
+            shipDistance.multiplyScalar(shipSpeed);
+            mine.position.add(shipDistance);
+            mine.rotation += mineRotationSpeed;
+            
             // This code makes the mines "home" in on the ship position
             const mineToShip = gfx.Vector2.subtract(this.ship.position, mine.position);
             mineToShip.normalize();
-            mineToShip.multiplyScalar(mineSpeed)
+            mineToShip.multiplyScalar(mineSpeed);
             mine.position.add(mineToShip);
 
             // Type cast the mine as a Mine object, and then call its update method.
@@ -185,8 +193,13 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
 
             // ADD YOUR CODE HERE
-
+            const laserDirection = new Vector2(0, 1);
+            laserDirection.normalize();
+            laserDirection.multiplyScalar(laserSpeed);
+            laser.translate(laserDirection);
             
+            if(laser.position.x > 1 || laser.position.x < -1 || laser.position.y > 1 || laser.position.y < -1) 
+                laser.remove();
         });  
 
         // Check for mine-to-mine collisions
@@ -215,7 +228,9 @@ export class SpaceMinesweeper extends gfx.GfxApp
     {
 
         // ADD YOUR CODE HERE
-
+        const laserInstance = new gfx.ShapeInstance(this.laser);
+        laserInstance.rotation = this.ship.rotation;
+        this.lasers.add(laserInstance);
     }
 
     // When the mouse moves, store the current position of the mouse.
@@ -276,7 +291,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
 
                 // ADD YOUR CODE HERE
-
+                if (mine1.intersects(mine2)) {
+                    mine1.explode();
+                    mine2.explode();
+                }
 
             }
         }
@@ -302,7 +320,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
 
                 // ADD YOUR CODE HERE
-
+                if (mine.intersects(laser, gfx.IntersectionMode2.AXIS_ALIGNED_BOUNDING_BOX)) {
+                    mine.explode();
+                    laser.remove();
+                }
 
             });
         });
