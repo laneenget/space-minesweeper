@@ -12,7 +12,7 @@ export class Mine extends gfx.ShapeInstance
         this.material = new gfx.Material2();
         this.material.copy(baseShape.material);
 
-        this.exploding = false;
+        this.exploding = false; 
         this.explodeAlpha = 0;
     }
 
