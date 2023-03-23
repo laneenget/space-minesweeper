@@ -18,7 +18,7 @@ export class Mine extends gfx.ShapeInstance
 
     update(deltaTime: number)
     {
-        const explodeTime = .25;
+        const explodeTime = .25; 
 
         if(this.exploding)
         {
