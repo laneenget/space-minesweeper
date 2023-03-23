@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Assignment 1, CSCI 4611, Fall 2022",
   "author": "Evan Suma Rosenberg <suma@umn.edu>",
+  "homepage": "https://laneenget.github.io/space-minesweeper/",
   "license": "CC BY-NC-SA 4.0",
   "type": "module",
   "devDependencies": {
@@ -21,5 +22,8 @@
     "start": "vite",
     "build": "vite build && javascript-obfuscator ./dist/index.js --output ./dist/index.js --string-array-wrappers-count 0 --string-array-encoding base64 --simplify false",
     "preview": "vite preview"
+  },
+  "dependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
